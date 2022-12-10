@@ -12,7 +12,7 @@ Start the proxy server (will start at http://localhost:3001 by default):
 yarn start
 ```
 
-Then, in your `openai` configuration, pass in the new base URL:
+Then, in your `openai` configuration, pass in the new `basePath` so that it sends requests through your proxy rather than directly to OpenAI:
 
 ```diff
 const { Configuration, OpenAIApi } = require("openai");
