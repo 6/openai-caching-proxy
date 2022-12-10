@@ -46,8 +46,6 @@ const checkCache = async (req: Request, res: Response, next: NextFunction) => {
 
 app.use(checkCache);
 
-// Sample (easy) request to try:
-// curl http://localhost:3001/proxy/models -H 'Authorization: Bearer YOUR_API_KEY'
 app.use(
   '/proxy',
   createProxyMiddleware({
