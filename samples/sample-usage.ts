@@ -22,7 +22,7 @@ const makeSampleRequests = async () => {
   const models = await openai.listModels();
   console.log('models:', models.data);
 
-  const completion = await openai.createCompletion({
+  const completionOpts = {
     model: 'text-ada-001',
     prompt: 'write me a poem about computers',
     max_tokens: 120,
@@ -33,8 +33,18 @@ const makeSampleRequests = async () => {
     presence_penalty: 1,
     frequency_penalty: 0,
     best_of: 1,
+  };
+  const completion1 = await openai.createCompletion(completionOpts);
+  console.log('completion 1:', completion1.data);
+
+  // Ensure that another completion with the same prompt but
+  // slightly different options returns a different response:
+  const completion2 = await openai.createCompletion({
+    ...completionOpts,
+    max_tokens: 50,
+    best_of: 2,
   });
-  console.log('completion:', completion.data);
+  console.log('completion 2:', completion2.data);
 };
 
 const main = async () => {
