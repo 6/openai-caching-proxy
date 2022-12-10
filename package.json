@@ -1,5 +1,5 @@
 {
-  "name": "openai-proxy-cache",
+  "name": "openai-caching-proxy",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
