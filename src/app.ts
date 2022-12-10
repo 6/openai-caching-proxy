@@ -16,7 +16,7 @@ app.use(cors());
 app.use(morgan('dev'));
 
 app.get('/', async (req: Request, res: Response) => {
-  res.json({ hello: 'hola' });
+  res.json({ ok: true });
 });
 
 const checkCache = async (req: Request, res: Response, next: NextFunction) => {
@@ -55,8 +55,6 @@ app.use(
     selfHandleResponse: true,
     onProxyRes: responseInterceptor(async (responseBuffer, proxyRes, req, res) => {
       const response = responseBuffer.toString('utf8'); // convert buffer to string
-      console.log(response.substring(0, 25), '...'); // log response body
-
       const cacheKey = (res as any).locals?.cacheKey; // This type is incorrect?
       if (cacheKey && res.statusCode >= 200 && res.statusCode < 300 && response?.length) {
         console.log('Writing 2xx response to cache: ', cacheKey);
