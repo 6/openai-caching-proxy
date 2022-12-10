@@ -14,12 +14,17 @@ const app: Application = express();
 
 app.use(cors());
 app.use(morgan('dev'));
+app.use(express.json());
 
 app.get('/', async (req: Request, res: Response) => {
   res.json({ ok: true });
 });
 
 const checkCache = async (req: Request, res: Response, next: NextFunction) => {
+  if (req.method !== 'GET' && !req.is('application/json')) {
+    // Don't attempt to cache non-JSON requests:
+    return next();
+  }
   const cacheKey = getCacheKey({
     authHeader: req.headers['authorization'],
     body: req.body,
@@ -28,7 +33,7 @@ const checkCache = async (req: Request, res: Response, next: NextFunction) => {
   });
   res.locals.cacheKey = cacheKey;
 
-  console.log('Checking cache for:', { method: req.method, path: req.path, cacheKey });
+  console.log(`Checking cache for: ${req.method} ${req.path}`, { cacheKey });
 
   const cachedResponse = await readCache({ cacheKey });
   if (cachedResponse) {
