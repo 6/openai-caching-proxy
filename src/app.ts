@@ -1,12 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import {
-  createProxyMiddleware,
-  Filter,
-  Options,
-  RequestHandler,
-  responseInterceptor,
-} from 'http-proxy-middleware';
+import { createProxyMiddleware, fixRequestBody, responseInterceptor } from 'http-proxy-middleware';
 import morgan from 'morgan';
 import { getCacheKey, readCache, writeCache } from './cache';
 
@@ -58,6 +52,7 @@ app.use(
     changeOrigin: true,
     pathRewrite: { '^/proxy': '' },
     selfHandleResponse: true,
+    onProxyReq: fixRequestBody,
     onProxyRes: responseInterceptor(async (responseBuffer, proxyRes, req, res) => {
       const response = responseBuffer.toString('utf8'); // convert buffer to string
       const cacheKey = (res as any).locals?.cacheKey; // This type is incorrect?
