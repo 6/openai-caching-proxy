@@ -23,3 +23,15 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 ```
+
+You can try a sample request. The first will be proxied to OpenAI but the second repeated/duplicate request will return the cached result instead.
+
+```ts
+// Sample request, try it twice and the second one
+// will return cached result:
+const models1 = await openai.listModels();
+console.log('models 1:', models1);
+
+const models2 = await openai.listModels();
+console.log('models 2:', models2);
+```
