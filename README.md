@@ -4,7 +4,7 @@ Basic caching proxy for OpenAI API.
 
 This can help reduce costs by caching OpenAI responses and returning the cached response for repeated requests.
 
-**Usage**
+### Usage
 
 Start the proxy server (will start at http://localhost:3001 by default):
 
@@ -35,5 +35,7 @@ console.log('models 1:', models1);
 const models2 = await openai.listModels();
 console.log('models 2:', models2);
 ```
+
+### Samples
 
 See `/samples/sample-usage.ts` for a full example of how to call this proxy with your openai client.
