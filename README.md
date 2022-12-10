@@ -24,7 +24,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 ```
 
-You can try a sample request. The first will be proxied to OpenAI but the second repeated/duplicate request will return the cached result instead.
+You can try a sample request. The first will be proxied to OpenAI since a cached response isn't yet saved for it, but the second repeated/duplicate request will return the cached result instead.
 
 ```ts
 // Sample request: try the same request twice and
