@@ -12,6 +12,8 @@ app.get('/', async (req: Request, res: Response) => {
   res.json({ hello: 'hola' });
 });
 
+// Sample (easy) request to try:
+// curl http://localhost:3001/proxy/models -H 'Authorization: Bearer YOUR_API_KEY'
 app.use(
   '/proxy',
   createProxyMiddleware({
@@ -20,14 +22,6 @@ app.use(
     pathRewrite: { '^/proxy': '' },
   }),
 );
-
-// app.use(
-//   '/api',
-//   createProxyMiddleware({
-//     target: 'http://www.example.org/api',
-//     changeOrigin: true,
-//   }),
-// );
 
 const port: number = Number(process.env.PORT || 3001);
 
