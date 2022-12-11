@@ -20,7 +20,7 @@ Then, in your `openai` configuration, pass in the new `basePath` so that it send
 const { Configuration, OpenAIApi } = require("openai");
 
 +// Specify how long (in seconds) you want to cache OpenAI responses for.
-+// You can also omit TTL altogether.
++// You can also omit TTL in `basePath` below if you don't need one.
 +const cacheTTL = 60 * 60 * 24;
 
 const configuration = new Configuration({
