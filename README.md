@@ -14,7 +14,7 @@ Start the proxy server (will start at http://localhost:3001 by default):
 yarn start
 ```
 
-Then, in your `openai` configuration, pass in the new `basePath` so that it sends requests through your proxy rather than directly to OpenAI:
+Then, in your [openai/openai-node](https://github.com/openai/openai-node) configuration, pass in the new `basePath` so that it sends requests through your proxy rather than directly to OpenAI:
 
 ```diff
 const { Configuration, OpenAIApi } = require("openai");
