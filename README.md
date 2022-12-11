@@ -4,7 +4,7 @@ Basic caching proxy for OpenAI API.
 
 This can help reduce costs (and get faster results) by returning cached responses for repeated requests.
 
-It only caches `POST` requests that have a JSON request body, as these are the only ones that cost money (for now).
+It only caches `POST` requests that have a JSON request body, as these tend to be the slowest and are the only ones that cost money (for now).
 
 ### Usage
 
