@@ -35,14 +35,10 @@ const opts = { model: 'text-ada-001', prompt: 'write a poem about computers' };
 const completion1 = await openai.createCompletion(opts);
 console.log('completion1:', completion1);
 
-// This second request uses the same opts, so it returns nearly instantly from
-// local cache:
+// This second request uses the same options, so it returns nearly instantly from
+// local cache and does not make a request to OpenAI:
 const completion1Cached = await openai.createCompletion(opts);
 console.log('completion1Cached:', completion1Cached);
-
-// This uses new completion opts so will be proxied as-is to OpenAI:
-const completion2 = await openai.createCompletion({ ...opts, max_tokens: 40 });
-console.log('completion2:', completion2);
 ```
 
 ### Specifying a cache TTL
