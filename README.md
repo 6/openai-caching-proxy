@@ -50,6 +50,8 @@ const completion2 = await openai.createCompletion({ ...opts, max_tokens: 40 });
 console.log('completion2:', completion2);
 ```
 
+If you need to force refresh the cache, you can add the header `'X-Proxy-Refresh': 'true'` to your `baseOptions` > `headers` object.
+
 ### Samples
 
 See `/samples/sample-usage.ts` for a full example of how to call this proxy with your openai client.

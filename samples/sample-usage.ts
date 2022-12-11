@@ -19,6 +19,8 @@ const configuration = new Configuration({
     headers: {
       // Cache responses for 3600 seconds (1 hour)
       'X-Proxy-TTL': 3600,
+      // If you need to force refresh cache, you can uncomment below:
+      // 'X-Proxy-Refresh': 'true',
     },
   },
 });

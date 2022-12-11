@@ -39,6 +39,11 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
   res.locals.cacheKey = cacheKey;
   res.locals.ttl = ttl;
 
+  if (req.header('X-Proxy-Refresh') === 'true') {
+    console.log('X-Proxy-Refresh was true, forcing a cache refresh.');
+    return next();
+  }
+
   console.log(`Checking cache for: ${req.method} ${req.path}`, { cacheKey });
 
   const cachedResponse = await readCache({ cacheKey });
