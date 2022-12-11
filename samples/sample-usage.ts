@@ -12,12 +12,15 @@ if (!apiKey) {
   process.exit(1);
 }
 
-// Cache responses for up to 3600 seconds (1 hour)
-const cacheTTL = 3600;
-
 const configuration = new Configuration({
   apiKey,
-  basePath: `http://localhost:3001/proxy/${cacheTTL}`,
+  basePath: `http://localhost:3001/proxy`,
+  baseOptions: {
+    headers: {
+      // Cache responses for 3600 seconds (1 hour)
+      'X-Proxy-TTL': 3600,
+    },
+  },
 });
 const openai = new OpenAIApi(configuration);
 

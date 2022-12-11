@@ -24,16 +24,14 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
     return next();
   }
 
-  const ttlMatch = req.path.match(/\/proxy\/([0-9]+)/);
-  const ttl = ttlMatch ? ttlMatch[1] : null;
-
+  const ttl = req.header('X-Proxy-TTL');
   if (ttl === '0') {
     // Skip cache if ttl is 0:
     return next();
   }
 
   const cacheKey = getCacheKey({
-    authHeader: req.headers['authorization'],
+    authHeader: req.header('authorization'),
     body: req.body,
     method: req.method,
     path: req.path,
@@ -58,11 +56,11 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use(
-  '/proxy/:ttl?',
+  '/proxy',
   createProxyMiddleware({
     target: 'https://api.openai.com/v1',
     changeOrigin: true,
-    pathRewrite: { '^/proxy(/[0-9]+)?': '' },
+    pathRewrite: { '^/proxy': '' },
     selfHandleResponse: true,
     onProxyReq: fixRequestBody,
     onProxyRes: responseInterceptor(async (responseBuffer, proxyRes, req, res) => {

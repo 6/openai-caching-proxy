@@ -19,13 +19,14 @@ Then, in your `openai` configuration, pass in the new `basePath` so that it send
 ```diff
 const { Configuration, OpenAIApi } = require("openai");
 
-+// Specify how long (in seconds) you want to cache OpenAI responses for.
-+// You can also omit TTL in `basePath` below if you don't need one.
-+const cacheTTL = 60 * 60 * 24;
-
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
-+ basePath: `http://localhost:3001/proxy/${cacheTTL}`,
++ basePath: `http://localhost:3001/proxy`,
++ // Below config is optional. You can specify cache TTL in seconds.
++ // If omitted, the cache will not have an expiry.
++ baseOptions: {
++   headers: { 'X-Proxy-TTL': 60 * 60 * 24 }
++ }
 });
 const openai = new OpenAIApi(configuration);
 ```
