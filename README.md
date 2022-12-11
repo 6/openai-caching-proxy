@@ -32,13 +32,13 @@ You can then try a few sample requests. The first will be proxied to OpenAI sinc
 // This first request will be proxied as-is to OpenAI API, since a cached
 // response does not yet exist for it:
 const opts = { model: 'text-ada-001', prompt: 'write a poem about computers' };
-const completion1 = await openai.createCompletion(opts);
-console.log('completion1:', completion1);
+const completion = await openai.createCompletion(opts);
+console.log('completion:', completion);
 
 // This second request uses the same options, so it returns nearly instantly from
 // local cache and does not make a request to OpenAI:
-const completion1Cached = await openai.createCompletion(opts);
-console.log('completion1Cached:', completion1Cached);
+const completionCached = await openai.createCompletion(opts);
+console.log('completionCached:', completionCached);
 ```
 
 ### Specifying a cache TTL
