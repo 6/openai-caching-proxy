@@ -29,15 +29,16 @@ const openai = new OpenAIApi(configuration);
 You can then try a few sample requests. The first will be proxied to OpenAI since a cached response isn't yet saved for it, but the second repeated/duplicate request will return the cached result instead.
 
 ```ts
+const options = { model: 'text-ada-001', prompt: 'write a poem about computers' };
+
 // This first request will be proxied as-is to OpenAI API, since a cached
 // response does not yet exist for it:
-const opts = { model: 'text-ada-001', prompt: 'write a poem about computers' };
-const completion = await openai.createCompletion(opts);
+const completion = await openai.createCompletion(options);
 console.log('completion:', completion);
 
 // This second request uses the same options, so it returns nearly instantly from
 // local cache and does not make a request to OpenAI:
-const completionCached = await openai.createCompletion(opts);
+const completionCached = await openai.createCompletion(options);
 console.log('completionCached:', completionCached);
 ```
 
