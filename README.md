@@ -19,7 +19,8 @@ Then, in your `openai` configuration, pass in the new `basePath` so that it send
 ```diff
 const { Configuration, OpenAIApi } = require("openai");
 
-+const cacheTTL = 60 * 60 * 24; // TTL in seconds
++// Specify how long (in seconds) you want to cache OpenAI responses for:
++const cacheTTL = 60 * 60 * 24;
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
