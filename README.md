@@ -22,6 +22,7 @@ const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 + basePath: `http://localhost:3001/proxy`,
++
 + // Below config is optional. You can specify cache TTL in seconds.
 + // If omitted, the cache will not have an expiry.
 + baseOptions: {
@@ -50,7 +51,18 @@ const completion2 = await openai.createCompletion({ ...opts, max_tokens: 40 });
 console.log('completion2:', completion2);
 ```
 
-If you need to force refresh the cache, you can add the header `'X-Proxy-Refresh': 'true'` to your `baseOptions` > `headers` object.
+### Refreshing the cache
+
+If you need to force refresh the cache, you can add the header `'X-Proxy-Refresh': 'true'`. This will fetch a new response from OpenAI and cache this new response.
+
+```diff
+const configuration = new Configuration({
+  ...
++ baseOptions: {
++   headers: { 'X-Proxy-Refresh': 'true' }
++ }
+});
+```
 
 ### Samples
 
