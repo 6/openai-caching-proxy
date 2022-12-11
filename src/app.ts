@@ -23,6 +23,10 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
   if (req.method !== 'POST' || !req.is('application/json')) {
     return next();
   }
+
+  const ttlMatch = req.path.match(/\/proxy\/([0-9]+)/);
+  const ttl = ttlMatch ? ttlMatch[1] : 0;
+
   const cacheKey = getCacheKey({
     authHeader: req.headers['authorization'],
     body: req.body,
@@ -30,6 +34,7 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
     path: req.path,
   });
   res.locals.cacheKey = cacheKey;
+  res.locals.ttl = ttl;
 
   console.log(`Checking cache for: ${req.method} ${req.path}`, { cacheKey });
 
@@ -48,20 +53,22 @@ app.use(async (req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use(
-  '/proxy',
+  '/proxy/:ttl',
   createProxyMiddleware({
     target: 'https://api.openai.com/v1',
     changeOrigin: true,
-    pathRewrite: { '^/proxy': '' },
+    pathRewrite: { '^/proxy/[0-9]+': '' },
     selfHandleResponse: true,
     onProxyReq: fixRequestBody,
     onProxyRes: responseInterceptor(async (responseBuffer, proxyRes, req, res) => {
       const response = responseBuffer.toString('utf8'); // convert buffer to string
       const cacheKey = (res as any).locals?.cacheKey; // This type is incorrect?
-      if (cacheKey && res.statusCode >= 200 && res.statusCode < 300 && response?.length) {
-        console.log('Writing 2xx response to cache: ', cacheKey);
+      const ttl = Number((res as any).locals?.ttl || 0); // This type is incorrect?
+      if (ttl && cacheKey && res.statusCode >= 200 && res.statusCode < 300 && response?.length) {
+        console.log('Writing 2xx response to cache: ', { cacheKey, ttl });
         await writeCache({
           cacheKey,
+          ttl,
           response: {
             headers: res.getHeaders() as Record<string, string>,
             body: response,

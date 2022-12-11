@@ -48,11 +48,12 @@ export const readCache = async ({
 
 interface WriteCacheProps {
   cacheKey: string;
+  ttl: number;
   response: CachedResponse;
 }
 
-export const writeCache = async ({ cacheKey, response }: WriteCacheProps): Promise<void> => {
+export const writeCache = async ({ cacheKey, ttl, response }: WriteCacheProps): Promise<void> => {
   const client = await getClient();
-  await client.set(cacheKey, JSON.stringify(response));
+  await client.set(cacheKey, JSON.stringify(response), { EX: ttl });
   return;
 };

@@ -19,9 +19,11 @@ Then, in your `openai` configuration, pass in the new `basePath` so that it send
 ```diff
 const { Configuration, OpenAIApi } = require("openai");
 
++const cacheTTL = 60 * 60 * 24; // TTL in seconds
+
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
-+ basePath: 'http://localhost:3001/proxy',
++ basePath: `http://localhost:3001/proxy/${cacheTTL}`,
 });
 const openai = new OpenAIApi(configuration);
 ```
