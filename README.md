@@ -22,12 +22,6 @@ const { Configuration, OpenAIApi } = require("openai");
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 + basePath: `http://localhost:3001/proxy`,
-+
-+ // Below config is optional. You can specify cache TTL in seconds.
-+ // If omitted, the cache will not have an expiry.
-+ baseOptions: {
-+   headers: { 'X-Proxy-TTL': 60 * 60 * 24 }
-+ }
 });
 const openai = new OpenAIApi(configuration);
 ```
@@ -51,9 +45,23 @@ const completion2 = await openai.createCompletion({ ...opts, max_tokens: 40 });
 console.log('completion2:', completion2);
 ```
 
+### Specifying a cache TTL
+
+If you don't want to indefinitely cache results, or you don't have an eviction policy set up on your redis instance, you can specify a TTL in seconds using the `X-Proxy-TTL` header.
+
+```diff
+const configuration = new Configuration({
+  ...
++ baseOptions: {
++   // In this example, specify a cache TTL of 24 hours before it expires:
++   headers: { 'X-Proxy-TTL': 60 * 60 * 24 }
++ }
+});
+```
+
 ### Refreshing the cache
 
-If you need to force refresh the cache, you can add the header `'X-Proxy-Refresh': 'true'`. This will fetch a new response from OpenAI and cache this new response.
+If you need to force refresh the cache, you can use the header `X-Proxy-Refresh`. This will fetch a new response from OpenAI and cache this new response.
 
 ```diff
 const configuration = new Configuration({
