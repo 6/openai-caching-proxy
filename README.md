@@ -4,6 +4,8 @@ Basic caching proxy for OpenAI API.
 
 This can help reduce costs (and get faster results) by returning cached responses for repeated requests.
 
+It only caches `POST` requests that contain a JSON request body, as these are the only ones (at this time) that have a cost.
+
 ### Usage
 
 Start the proxy server (will start at http://localhost:3001 by default):

@@ -19,9 +19,6 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 const makeSampleRequests = async () => {
-  const models = await openai.listModels();
-  console.log('models:', models.data);
-
   const completionOpts = {
     model: 'text-ada-001',
     prompt: 'write a poem about computers',

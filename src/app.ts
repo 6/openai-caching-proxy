@@ -10,13 +10,17 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 
+// basic healthcheck endpoint
 app.get('/', async (req: Request, res: Response) => {
   res.json({ ok: true });
 });
 
-const checkCache = async (req: Request, res: Response, next: NextFunction) => {
-  if (req.method !== 'GET' && !req.is('application/json')) {
-    // Don't attempt to cache non-JSON requests:
+// Check for existing cached response for this request. If one exists,
+// return it. Otherwise continue.
+app.use(async (req: Request, res: Response, next: NextFunction) => {
+  // Only cache POST requests that have a JSON request body, as these
+  // are typically the requests that incur costs.
+  if (req.method !== 'POST' || !req.is('application/json')) {
     return next();
   }
   const cacheKey = getCacheKey({
@@ -41,9 +45,7 @@ const checkCache = async (req: Request, res: Response, next: NextFunction) => {
   console.log('No cache found, proxying request to api.openai.com instead.');
 
   next();
-};
-
-app.use(checkCache);
+});
 
 app.use(
   '/proxy',
