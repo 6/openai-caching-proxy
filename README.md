@@ -21,7 +21,7 @@ const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
-+ basePath: `http://localhost:3001/proxy`,
++ basePath: 'http://localhost:3001/proxy',
 });
 const openai = new OpenAIApi(configuration);
 ```
