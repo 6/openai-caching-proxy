@@ -1,3 +1,5 @@
+# :warning: See https://github.com/6/openai-caching-proxy-worker for a better implementation
+
 # openai-caching-proxy
 
 Basic caching proxy for OpenAI API.
